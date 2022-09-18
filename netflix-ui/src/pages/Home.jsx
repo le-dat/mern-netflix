@@ -18,6 +18,10 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (!currentUser) navigate("/login");
+  });
+
   useEffect(() => {
     dispatch(getGenres());
   }, []);
@@ -25,10 +29,6 @@ const Home = () => {
   useEffect(() => {
     if (genresLoaded) dispatch(fetchMovies({ type: "all" }));
   }, [genresLoaded]);
-
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (!currentUser) navigate("/login");
-  });
 
   useEffect(() => {
     window.onscroll = () => {

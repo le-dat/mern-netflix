@@ -43,6 +43,7 @@ const Player = () => {
             .filter(({ type }) => type === "Trailer")
             .map((watch) => (
               <iframe
+                key={watch.id}
                 className="w-full h-[12rem] max-w-[120rem] md:h-[50rem] self-center"
                 src={`https://www.youtube.com/embed/${watch.key}`}
                 title="YouTube video player"

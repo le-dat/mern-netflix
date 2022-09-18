@@ -6,6 +6,7 @@ import { RiThumbDownFill, RiThumbUpFill } from "react-icons/ri";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../redux/constants";
 import { addMovieDetail, removeMovieFromLiked } from "../redux/NetflixSlice";
 import { firebaseAuth } from "../utils/firebase";
 import { getToast } from "../utils/toast";
@@ -16,11 +17,15 @@ const Card = ({ movieData, isLiked = false }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) setEmail(currentUser.email);
+  });
+
   const handleAddToList = async () => {
     try {
       const {
         data: { success, msg },
-      } = await axios.post(`http://localhost:5000/api/user/add`, { email, data: movieData });
+      } = await axios.post(`${API_URL}/api/user/add`, { email, data: movieData });
       return success ? getToast({ type: "success", msg }) : getToast({ type: "warn", msg });
     } catch (err) {
       getToast({ type: "warn", msg: err.message });
@@ -35,10 +40,6 @@ const Card = ({ movieData, isLiked = false }) => {
       getToast({ type: "warn", msg: err.message });
     }
   };
-
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) setEmail(currentUser.email);
-  });
 
   return (
     <div className="group relative mr-[1rem] h-full bg-gray-900/60 overflow-hidden cursor-pointer">

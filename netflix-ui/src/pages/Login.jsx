@@ -13,6 +13,10 @@ const Login = () => {
     password: "",
   });
 
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -23,10 +27,6 @@ const Login = () => {
       getToast({ type: "error", msg: err.message });
     }
   };
-
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) navigate("/");
-  });
 
   return (
     <div className="relative flex items-center justify-center ">
